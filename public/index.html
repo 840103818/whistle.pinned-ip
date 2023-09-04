@@ -148,13 +148,18 @@
           $('#token').val(data.token);
         }
         $('#submit').click(function() {
-          var domain = $('#domain').val().trim();
-          if (!domain) {
+          var domains = $('#domain').val().trim();
+          if (!domains) {
             return showMessage('域名不能为空');
           }
-          if (/[^\w.-]/.test(domain)) {
-            return showMessage('域名只能包含字母、数字、.、-、_');
-          }
+
+            for (let domain of domains.split(";")) {
+                if (/[^\w.-]/.test(domain)) {
+                    return showMessage('域名只能包含字母、数字、.、-、_');
+                }
+            }
+
+
           var id = $('#id').val().trim();
           if (!id) {
             return showMessage('ID不能为空');
@@ -174,7 +179,7 @@
             dataType: 'json',
             data: {
               id: id,
-              domain: domain,
+              domain: domains,
               token: token
             },
             success: function(data) {
